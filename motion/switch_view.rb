@@ -71,7 +71,11 @@ class BSSwitchView < UIScrollView
     if scrollView == @wrapperView
       index = ((scrollView.contentOffset.x + scrollView.frame.size.width/2) / scrollView.contentSize.width * self.views.count).floor
       
-      if index >= 0 && index <= self.views.count - 1
+      if (@selectedIndex - index).abs == 1
+        @preventPropagation = !@preventPropagation
+      end
+      
+      if index >= 0 && index <= self.views.count - 1 && (@selectedIndex - index).abs <= 1
         @selectedIndex = index
       end
       
@@ -101,6 +105,7 @@ class BSSwitchView < UIScrollView
     if scrollView == @wrapperView
       @beginDragX = scrollView.contentOffset.x
       @endDragX = nil
+      @preventPropagation = false
     end
   end
   
@@ -112,25 +117,15 @@ class BSSwitchView < UIScrollView
   
   def scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     if scrollView == @wrapperView
-      if scrollView.contentOffset.x < @wrapperView.frame.size.width * @selectedIndex/2 &&
-        scrollView.contentOffset.x > 0 &&
-        @selectedIndex > 0
-        self.setSelectedIndex(@selectedIndex - 1, animated: true)
-      elsif @wrapperView.frame.size.width * (@selectedIndex+1)/2 < scrollView.contentOffset.x &&
-        scrollView.contentOffset.x < (@wrapperView.contentSize.width - @wrapperView.frame.size.width) &&
-        @selectedIndex < self.views.count - 1
-        self.setSelectedIndex(@selectedIndex + 1, animated: true)
-      else
-        self.setSelectedIndex(@selectedIndex, animated: true)
-      end
+      self.setSelectedIndex(@selectedIndex, animated: true)
     end
   end
   
   def scrollViewWillBeginDecelerating(scrollView)
     if scrollView == @wrapperView
-      if @endDragX < @beginDragX && @selectedIndex > 0
+      if @endDragX < @beginDragX && @selectedIndex > 0 && !@preventPropagation
         self.setSelectedIndex(@selectedIndex - 1, animated: true)
-      elsif @endDragX > @beginDragX && @selectedIndex < self.views.count - 1
+      elsif @endDragX > @beginDragX && @selectedIndex < self.views.count - 1 && !@preventPropagation
         self.setSelectedIndex(@selectedIndex + 1, animated: true)
       else
         self.setSelectedIndex(@selectedIndex, animated: true)
