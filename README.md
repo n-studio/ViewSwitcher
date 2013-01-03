@@ -4,7 +4,11 @@ View Switch bar just like first Google+ iOS app or mixi iOS app
 
 ## Installation
 
-Clone repository, run ```gem build view_switcher.gemspec``` then ```gem install view_switcher-x.x.x.gem```
+Add in Gemfile:
+
+```
+gem 'view_switcher', :git => 'https://github.com/n-studio/ViewSwitcher.git'
+```
 
 Add in Rakefile:
 
