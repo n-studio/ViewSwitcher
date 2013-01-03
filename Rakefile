@@ -6,7 +6,6 @@ require 'motion/project'
 
 require 'bubble-wrap'
 require 'bw-tableview'
-# require 'basic-scaffold'
 require 'view_switcher'
 
 Motion::Project::App.setup do |app|
