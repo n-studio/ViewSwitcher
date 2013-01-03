@@ -6,13 +6,13 @@ View Switch bar just like first Google+ iOS app or mixi iOS app
 
 Add in Gemfile:
 
-```
+```ruby
 gem 'view_switcher', :git => 'https://github.com/n-studio/ViewSwitcher.git'
 ```
 
 Add in Rakefile:
 
-```
+```ruby
 require 'bubble-wrap'
 require 'view_switcher'
 ```
