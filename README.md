@@ -21,7 +21,7 @@ require 'view_switcher'
 
 ![ViewSwitcher screenshot][1]
 
-```
+```ruby
   def viewDidLoad
     super
     applicationFrame = UIScreen.mainScreen.applicationFrame
