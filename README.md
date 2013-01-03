@@ -68,4 +68,4 @@ require 'view_switcher'
 end
 ```
 
-  [1]: https://github.com/brandonhamilton/inputtoolbar/raw/master/Screenshot.png
+  [1]: https://github.com/n-studio/ViewSwitcher/raw/master/Screenshot.png
