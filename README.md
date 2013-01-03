@@ -65,7 +65,6 @@ require 'view_switcher'
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     ...
   end
-end
 ```
 
   [1]: https://github.com/n-studio/ViewSwitcher/raw/master/Screenshot.png
