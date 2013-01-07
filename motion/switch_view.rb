@@ -62,8 +62,16 @@ class BSSwitchView < UIScrollView
     @selectedIndex
   end
   
-  def currentView
+  def visiblePage
     self.views[@selectedIndex]
+  end
+  
+  def visibleView
+    self.views[@selectedIndex][:view]
+  end
+  
+  def visibleTitle
+    self.views[@selectedIndex][:title]
   end
   
   def wrapperView=(view)
