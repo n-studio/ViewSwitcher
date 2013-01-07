@@ -37,6 +37,10 @@ class TestViewController < UITableViewController
       {name: "view3", title: "View3", view: @tableView3}
     ]
     
+    @switchView.labels.each do |label|
+      label.backgroundColor = UIColor.clearColor
+    end
+    
   end
   
   def setupTableView

@@ -1,6 +1,6 @@
 class BSSwitchView < UIScrollView
   
-  attr_accessor :delegate, :views, :wrapperView
+  attr_accessor :delegate, :views, :wrapperView, :labels
   
   def init
     super
@@ -60,6 +60,10 @@ class BSSwitchView < UIScrollView
   
   def selectedIndex
     @selectedIndex
+  end
+  
+  def currentView
+    self.views[@selectedIndex]
   end
   
   def wrapperView=(view)
