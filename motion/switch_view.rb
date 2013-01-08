@@ -54,6 +54,7 @@ class BSSwitchView < UIScrollView
         end
       end
       @wrapperView.setContentOffset([index * @wrapperView.frame.size.width, 0], animated: animated)
+      @delegate.didChangePage(index) if @selectedIndex != index && @delegate.respond_to?(:didChangePage)
       @selectedIndex = index
     end
   end
