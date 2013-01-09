@@ -53,7 +53,7 @@ class BSSwitchView < UIScrollView
           @labels[index + 1].frame = frame
         end
       end
-      @delegate.didChangePage(index) if @selectedIndex != index && @delegate.respond_to?(:didChangePage)
+      @delegate.pageDidChange(index) if !@isDragged && @indexBeforeDrag != index && @delegate.respond_to?(:pageDidChange)
       @selectedIndex = index
       @wrapperView.setContentOffset([index * @wrapperView.frame.size.width, 0], animated: animated)
       return index
@@ -117,6 +117,8 @@ class BSSwitchView < UIScrollView
   
   def scrollViewWillBeginDragging(scrollView)
     if scrollView == @wrapperView
+      @indexBeforeDrag = @selectedIndex
+      @isDragged = true
       @beginDragX = scrollView.contentOffset.x
       @endDragX = nil
       @preventPropagation = false
@@ -131,6 +133,7 @@ class BSSwitchView < UIScrollView
   
   def scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     if scrollView == @wrapperView
+      @isDragged = false
       self.setSelectedIndex(@selectedIndex, animated: true)
     end
   end
