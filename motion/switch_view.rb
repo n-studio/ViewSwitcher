@@ -1,6 +1,6 @@
 class BSSwitchView < UIScrollView
   
-  attr_accessor :delegate, :views, :wrapperView, :labels
+  attr_accessor :delegate, :pages, :wrapperView, :labels
   
   def init
     super
@@ -8,25 +8,25 @@ class BSSwitchView < UIScrollView
     self
   end
   
-  def views=(views)
+  def pages=(pages)
     @labels = NSMutableArray.alloc.init
-    views.each_with_index do |view, index|
+    pages.each_with_index do |page, index|
       @labels[index] = begin
         l = UILabel.alloc.initWithFrame [[0, 0], [50, 20]]
-        l.text = "#{view[:title]}"
+        l.text = "#{page[:title]}"
         l
       end
       self.addSubview @labels[index]
       if @wrapperView
         frame = @wrapperView.frame
         frame.origin = [@wrapperView.frame.size.width*index, 0]
-        view[:view].frame = frame
-        @wrapperView.addSubview view[:view]
+        page[:view].frame = frame
+        @wrapperView.addSubview page[:view]
       end
     end
-    size = CGSizeMake(views.count * @wrapperView.frame.size.width, @wrapperView.frame.size.height)
+    size = CGSizeMake(pages.count * @wrapperView.frame.size.width, @wrapperView.frame.size.height)
     @wrapperView.contentSize = size
-    @views = views
+    @pages = pages
   end
   
   def setSelectedIndex(index, animated: animated)
@@ -47,15 +47,16 @@ class BSSwitchView < UIScrollView
         frame = @labels[index].frame
         frame.origin.x = (@wrapperView.frame.size.width - @labels[index].frame.size.width) * 0.5
         @labels[index].frame = frame
-        if index < self.views.count - 1
+        if index < self.pages.count - 1
           frame = @labels[index + 1].frame
           frame.origin.x = (@wrapperView.frame.size.width - @labels[index + 1].frame.size.width) * 1
           @labels[index + 1].frame = frame
         end
       end
-      @wrapperView.setContentOffset([index * @wrapperView.frame.size.width, 0], animated: animated)
       @delegate.didChangePage(index) if @selectedIndex != index && @delegate.respond_to?(:didChangePage)
       @selectedIndex = index
+      @wrapperView.setContentOffset([index * @wrapperView.frame.size.width, 0], animated: animated)
+      return index
     end
   end
   
@@ -64,15 +65,15 @@ class BSSwitchView < UIScrollView
   end
   
   def visiblePage
-    self.views[@selectedIndex]
+    self.pages[@selectedIndex]
   end
   
   def visibleView
-    self.views[@selectedIndex][:view]
+    self.pages[@selectedIndex][:view]
   end
   
   def visibleTitle
-    self.views[@selectedIndex][:title]
+    self.pages[@selectedIndex][:title]
   end
   
   def wrapperView=(view)
@@ -82,13 +83,13 @@ class BSSwitchView < UIScrollView
   
   def scrollViewDidScroll(scrollView)
     if scrollView == @wrapperView
-      index = ((scrollView.contentOffset.x + 1 + scrollView.frame.size.width/2) / scrollView.contentSize.width * self.views.count).floor
+      index = ((scrollView.contentOffset.x + 1 + scrollView.frame.size.width/2) / scrollView.contentSize.width * self.pages.count).floor
       
       if (@selectedIndex - index).abs == 1
         @preventPropagation = !@preventPropagation
       end
       
-      if index >= 0 && index <= self.views.count - 1 && (@selectedIndex - index).abs <= 1
+      if index >= 0 && index <= self.pages.count - 1 && (@selectedIndex - index).abs <= 1
         @selectedIndex = index
       end
       
@@ -100,13 +101,13 @@ class BSSwitchView < UIScrollView
         @labels[index - 1].frame = frame
       end
       
-      if index >= 0 && index <= self.views.count - 1
+      if index >= 0 && index <= self.pages.count - 1
         frame = @labels[index].frame
         frame.origin.x = (self.frame.size.width - @labels[index].frame.size.width) * (0.75 - progress*0.5)
         @labels[index].frame = frame
       end
       
-      if index < self.views.count - 1
+      if index < self.pages.count - 1
         frame = @labels[index + 1].frame
         frame.origin.x = (self.frame.size.width - @labels[index + 1].frame.size.width) * (1.25 - progress*0.5)
         @labels[index + 1].frame = frame
@@ -138,7 +139,7 @@ class BSSwitchView < UIScrollView
     if scrollView == @wrapperView
       if @endDragX < @beginDragX && @selectedIndex > 0 && !@preventPropagation
         self.setSelectedIndex(@selectedIndex - 1, animated: true)
-      elsif @endDragX > @beginDragX && @selectedIndex < self.views.count - 1 && !@preventPropagation
+      elsif @endDragX > @beginDragX && @selectedIndex < self.pages.count - 1 && !@preventPropagation
         self.setSelectedIndex(@selectedIndex + 1, animated: true)
       else
         self.setSelectedIndex(@selectedIndex, animated: true)
