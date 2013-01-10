@@ -2,9 +2,9 @@ class BSSwitchView < UIScrollView
   
   attr_accessor :delegate, :pages, :wrapperView, :labels
   
-  def init
+  def initWithFrame(frame)
     super
-    
+    self.scrollsToTop = false
     self
   end
   
@@ -21,6 +21,7 @@ class BSSwitchView < UIScrollView
         frame = @wrapperView.frame
         frame.origin = [@wrapperView.frame.size.width*index, 0]
         page[:view].frame = frame
+        page[:view].scrollsToTop = false if page[:view].respond_to?(:scrollsToTop=)
         @wrapperView.addSubview page[:view]
       end
     end
@@ -53,7 +54,11 @@ class BSSwitchView < UIScrollView
           @labels[index + 1].frame = frame
         end
       end
-      @delegate.pageDidChange(index) if !@isDragged && @indexBeforeDrag != index && @delegate.respond_to?(:pageDidChange)
+      if !@isDragged && @indexBeforeDrag != index
+        self.pages[@indexBeforeDrag].scrollsToTop = false if @indexBeforeDrag && self.pages[@indexBeforeDrag].respond_to?(:scrollsToTop=)
+        self.pages[index][:view].scrollsToTop = true if self.pages[index][:view].respond_to?(:scrollsToTop=)
+        @delegate.pageDidChange(index) if @delegate.respond_to?(:pageDidChange)
+      end
       @selectedIndex = index
       @wrapperView.setContentOffset([index * @wrapperView.frame.size.width, 0], animated: animated)
       return index
