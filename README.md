@@ -7,7 +7,7 @@ View Switch bar just like first Google+ iOS app or mixi iOS app
 Add in Gemfile:
 
 ```ruby
-gem 'view_switcher', :git => 'https://github.com/n-studio/ViewSwitcher.git'
+gem 'view_switcher', :git => 'https://github.com/n-studio/ViewSwitcher.git', :tag => "v0.1"
 ```
 
 Add in Rakefile:

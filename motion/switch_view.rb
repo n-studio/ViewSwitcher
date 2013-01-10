@@ -14,6 +14,7 @@ class BSSwitchView < UIScrollView
       @labels[index] = begin
         l = UILabel.alloc.initWithFrame [[0, 0], [50, 20]]
         l.text = "#{page[:title]}"
+        l.sizeToFit
         l
       end
       self.addSubview @labels[index]
@@ -100,6 +101,12 @@ class BSSwitchView < UIScrollView
       
       progress = ((scrollView.contentOffset.x + scrollView.frame.size.width/2) % scrollView.frame.size.width) / scrollView.frame.size.width
       
+      if index > 1
+        frame = @labels[index - 2].frame
+        frame.origin.x = (self.frame.size.width - @labels[index - 2].frame.size.width) * (-0.25 - progress*0.5)
+        @labels[index - 2].frame = frame
+      end
+      
       if index > 0
         frame = @labels[index - 1].frame
         frame.origin.x = (self.frame.size.width - @labels[index - 1].frame.size.width) * (0.25 - progress*0.5)
@@ -116,6 +123,12 @@ class BSSwitchView < UIScrollView
         frame = @labels[index + 1].frame
         frame.origin.x = (self.frame.size.width - @labels[index + 1].frame.size.width) * (1.25 - progress*0.5)
         @labels[index + 1].frame = frame
+      end
+      
+      if index < self.pages.count - 2
+        frame = @labels[index + 2].frame
+        frame.origin.x = (self.frame.size.width - @labels[index + 2].frame.size.width) * (1.75 - progress*0.5)
+        @labels[index + 2].frame = frame
       end
     end
   end
