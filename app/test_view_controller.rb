@@ -107,4 +107,8 @@ class TestViewController < UITableViewController
     super
     @switchView.setSelectedIndex(0, animated: false)
   end
+  
+  def pageDidChange(index)
+    BW.p "Index #{index} did change!"
+  end
 end
