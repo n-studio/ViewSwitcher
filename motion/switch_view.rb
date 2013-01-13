@@ -32,7 +32,7 @@ class BSSwitchView < UIScrollView
   end
   
   def setSelectedIndex(index, animated: animated)
-    if @wrapperView
+    if @wrapperView && @pages
       if animated == false
         @labels.each_with_index do |label, i|
           unless [index - 1, index, index + 1].include?(i)
