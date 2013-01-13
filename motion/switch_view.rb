@@ -65,6 +65,7 @@ class BSSwitchView < UIScrollView
         self.pages[index][:view].scrollsToTop = true if self.pages[index][:view].respond_to?(:scrollsToTop=)
         @delegate.pageDidChange(index) if @delegate.respond_to?(:pageDidChange)
       end
+      @indexBeforeDrag = index
       @selectedIndex = index
       @wrapperView.setContentOffset([index * @wrapperView.frame.size.width, 0], animated: animated)
       return index
