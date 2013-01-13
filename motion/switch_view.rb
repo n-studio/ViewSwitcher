@@ -9,6 +9,11 @@ class BSSwitchView < UIScrollView
   end
   
   def pages=(pages)
+    @pages.each_with_index do |page, i|
+      page[:view].removeFromSuperview
+      @labels[i].removeFromSuperview
+    end if @pages
+    
     @labels = NSMutableArray.alloc.init
     pages.each_with_index do |page, index|
       @labels[index] = begin
