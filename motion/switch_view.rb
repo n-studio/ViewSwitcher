@@ -158,7 +158,9 @@ class BSSwitchView < UIScrollView
   def scrollViewDidEndDragging(scrollView, willDecelerate: decelerate)
     if scrollView == @wrapperView
       @isDragged = false
-      self.setSelectedIndex(@selectedIndex, animated: true)
+      if UIDevice.currentDevice.systemVersion.floatValue >= 6.0
+        self.setSelectedIndex(@selectedIndex, animated: true)
+      end
     end
   end
   

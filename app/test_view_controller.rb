@@ -20,7 +20,11 @@ class TestViewController < UITableViewController
     # init scrollView
     @horizontalScrollView = BSSwitchWrapperView.alloc.initWithFrame [[0, @switchView.frame.size.height], [Device.screen.width_for_orientation(:portrait), applicationFrame.size.height - @switchView.frame.size.height]]
     @horizontalScrollView.backgroundColor = "#ffff00".to_color
-    @horizontalScrollView.bounces = true
+    if UIDevice.currentDevice.systemVersion.floatValue >= 6.0
+      @horizontalScrollView.bounces = true
+    else
+      @horizontalScrollView.bounces = false # bounce behaviour is weird with iOS < 6.0
+    end
     self.view.addSubview @horizontalScrollView
     @switchView.wrapperView = @horizontalScrollView
     
@@ -39,6 +43,17 @@ class TestViewController < UITableViewController
     
     @switchView.labels.each do |label|
       label.backgroundColor = UIColor.clearColor
+    end
+    
+    @swapButton = begin
+      b = UIButton.buttonWithType UIButtonTypeRoundedRect
+      b.frame = [[0, 300], [50, 30]]
+      b.setTitle("swap", forState: UIControlStateNormal)
+      b
+    end
+    self.view.addSubview @swapButton
+    @swapButton.when_tapped do
+      @switchView.setSelectedIndex((@switchView.selectedIndex+1) % @switchView.pages.count, animated: true)
     end
     
   end
