@@ -95,7 +95,7 @@ class BSSwitchView < UIScrollView
   
   def scrollViewDidScroll(scrollView)
     if scrollView == @wrapperView
-      index = ((scrollView.contentOffset.x + 1 + scrollView.frame.size.width/2) / scrollView.contentSize.width * self.pages.count).floor
+      index = ((scrollView.contentOffset.x + 0.5 + scrollView.frame.size.width/2) / scrollView.contentSize.width * self.pages.count).floor
       
       if (@selectedIndex - index).abs == 1
         @preventPropagation = !@preventPropagation
