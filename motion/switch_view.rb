@@ -61,7 +61,7 @@ class BSSwitchView < UIScrollView
         end
       end
       if !@isDragged && @indexBeforeDrag != index
-        self.pages[@indexBeforeDrag].scrollsToTop = false if @indexBeforeDrag && self.pages[@indexBeforeDrag].respond_to?(:scrollsToTop=)
+        self.pages[@indexBeforeDrag][:view].scrollsToTop = false if @indexBeforeDrag && self.pages[@indexBeforeDrag][:view].respond_to?(:scrollsToTop=)
         self.pages[index][:view].scrollsToTop = true if self.pages[index][:view].respond_to?(:scrollsToTop=)
         @delegate.pageDidChange(index) if @delegate.respond_to?(:pageDidChange)
       end
