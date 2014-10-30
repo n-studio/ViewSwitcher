@@ -43,6 +43,12 @@ class TestViewController < UITableViewController
     
     @switchView.labels.each do |label|
       label.backgroundColor = UIColor.clearColor
+      label.textAlignment = UITextAlignmentCenter
+      label.font = UIFont.boldSystemFontOfSize(14)
+      label.textColor = "#666666".to_color
+      label.sizeToFit
+      label.width += 10
+      label.height += 10
     end
     
     @swapButton = begin
