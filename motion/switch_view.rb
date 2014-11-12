@@ -14,6 +14,8 @@ class BSSwitchView < UIScrollView
       @labels[i].removeFromSuperview
     end if @pages
     
+    @selectedIndex = 0
+    
     @labels = NSMutableArray.alloc.init
     pages.each_with_index do |page, index|
       @labels[index] = begin

@@ -53,7 +53,7 @@ require 'view_switcher'
     @tableView3.dataSource = self
     @tableView3.delegate = self
     
-    @switchView.views = [
+    @switchView.pages = [
       {name: "view1", title: "View1", view: @tableView1},
       {name: "view2", title: "View2", view: @tableView2},
       {name: "view3", title: "View3", view: @tableView3}
